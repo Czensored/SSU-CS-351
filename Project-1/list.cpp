@@ -1,4 +1,4 @@
-
+#include <list>
 #include <cstdlib>
 #include <iostream>
 #include <numeric>
@@ -21,7 +21,7 @@ struct Node {
     Hash hash(void) {
         const Hash multiplier = 2654435789;
         Hash hashValue = 104395301;
-        
+
         for (auto byte: bytes) {
             hashValue += (multiplier * byte) ^ (hashValue >> 23);
         }
@@ -34,7 +34,7 @@ struct Node {
         for (auto byte : node.bytes) {
             os << (int) byte << " ";
         }
-        
+
         return os;
     }
 };
