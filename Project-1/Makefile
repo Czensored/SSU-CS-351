@@ -7,7 +7,7 @@
 #  These variables are used in building the programs, as well as configuring
 #    how tests are run.  These values have default over-rideable values
 #    (which is what the ?= operator does; it uses the value in this declaration
-#    if a different value isn't provided)  
+#    if a different value isn't provided)
 #
 
 # Compiler optimization level; debug only by default
@@ -31,7 +31,7 @@ NUM_TRIALS ?= 10
 #
 # --- Tool and option variables
 #
-#  Variables used to select files and specify filenames, specify commands, 
+#  Variables used to select files and specify filenames, specify commands,
 #    an provide options to commands.  These variables are used in the build
 #    rules in the next section
 #
@@ -46,9 +46,9 @@ SOURCES = $(wildcard *.cpp)
 #
 TARGETS = $(SOURCES:.cpp=.out)
 
-# Construct C++ compiler flags (CXXFLAGS).  
+# Construct C++ compiler flags (CXXFLAGS).
 CXXDEFS = -DMIN_BYTES=$(MIN_BYTES) -DMAX_BYTES=$(MAX_BYTES)
-CXXFLAGS = $(OPT) $(CXXDEFS) 
+CXXFLAGS = $(OPT) $(CXXDEFS)
 
 # Select files that should be removed when we need to "clean" a project
 DIRT = $(wildcard *.o *.out *.dSYM)
@@ -72,7 +72,7 @@ ifeq ($(OSTYPE), darwin) # macOS
 endif
 
 ifeq ($(OSTYPE),linux)
-	TIME := /usr/bin/time -f "%e real\t%U user\t%S sys\t%M memory (KB)"
+	TIME := /usr/bin/time -f "%e real\t%U user\t%S sys\t%M memory (/KB)"
 endif
 
 # Sorry Windows users :-P
@@ -117,7 +117,7 @@ clean:
 #   should execute
 test: targets
 	@ for pgm in $(TARGETS) ; do \
-		result=$$($$pgm $(NUM_BLOCKS)) ;\
+		result=$$(./$$pgm $(NUM_BLOCKS)) ;\
 		$(PRINTF) "%-18s %s\n" "$$pgm:" "$$result" ;\
 	done
 
@@ -127,7 +127,7 @@ test: targets
 #   should execute
 breaks: target
 	@ for pgm in $(TARGETS) ; do \
-		result=$$($(STRACE) $$pgm $(NUM_BLOCKS) 2>&1 $(GREP) brk | $(WC)) ;\
+		result=$$($(STRACE) ./$$pgm $(NUM_BLOCKS) 2>&1 $(GREP) brk | $(WC)) ;\
 		$(PRINTF) "%-18s %s\n" "$$pgm:" "$$result" ;\
 	done
 
@@ -141,7 +141,7 @@ trials: targets
 	for pgm in $(TARGETS) ; do \
 		$(PRINTF) "%s (list length = %d):\n" $$pgm $(NUM_BLOCKS) ;\
 		for t in {1..$(NUM_TRIALS)} ; do \
-			( $(TIME) $$pgm $(NUM_BLOCKS) > /dev/null ) 2>&1 | tee -a $(LOG) ;\
+			( $(TIME) ./$$pgm $(NUM_BLOCKS) > /dev/null ) 2>&1 | tee -a $(LOG) ;\
 		done ;\
 		cat $(LOG) | $(AWK) ;\
 		$(PRINTF) "\n" ;\

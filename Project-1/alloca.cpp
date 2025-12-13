@@ -22,7 +22,7 @@ struct Node {
     Hash hash(void) {
         const Hash multiplier = 2654435789;
         Hash hashValue = 104395301;
-        
+
         for (Size i = 0; i < numBytes; ++i) {
             hashValue += (multiplier * bytes[i]) ^ (hashValue >> 23);
         }
@@ -35,7 +35,7 @@ struct Node {
         for (Size i = 0; i < node.numBytes; ++i) {
             os << (int) node.bytes[i] << " ";
         }
-        
+
         return os;
     }
 };
@@ -58,7 +58,7 @@ Hash process(Size numBlocks, Node* head, Node* tail) {
 
         return hash;
     }
-    
+
     Size numBytes = getNumBytesForBlock();
     void* memory = alloca(sizeof(Node) + numBytes);
     Node* node = new (memory) Node(numBytes);

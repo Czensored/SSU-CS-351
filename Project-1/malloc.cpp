@@ -21,7 +21,7 @@ struct Node {
     Hash hash(void) {
         const Hash multiplier = 2654435789;
         Hash hashValue = 104395301;
-        
+
         for (Size i = 0; i < numBytes; ++i) {
             hashValue += (multiplier * bytes[i]) ^ (hashValue >> 23);
         }
@@ -34,7 +34,7 @@ struct Node {
         for (Size i = 0; i < node.numBytes; ++i) {
             os << (int) node.bytes[i] << " ";
         }
-        
+
         return os;
     }
 };
@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
             std::cerr << "Node allocation failed\n";
             return EXIT_FAILURE;
         }
-        
+
         if (head == nullptr) {
             head = tail = node;
         }
